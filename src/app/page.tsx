@@ -20,7 +20,7 @@ function getProductLabel(count: number) {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background px-4 py-6 md:px-0 md:pt-12.5">
+    <main className="min-h-screen bg-card px-4 py-6 md:bg-background md:px-0 md:pt-12.5">
       <div className="mx-auto flex w-full max-w-310 flex-col gap-6 bg-card">
         <header className="flex items-center justify-between">
           <div>

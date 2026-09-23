@@ -1,5 +1,10 @@
+"use client";
+
+import { useState } from "react";
 import { Plus } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
+import { ProductDialog } from "@/components/products/product-dialog";
 import { ProductsTable } from "@/components/products/products-table";
 import { products } from "@/lib/products";
 
@@ -19,6 +24,8 @@ function getProductLabel(count: number) {
 }
 
 export default function Home() {
+  const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
+
   return (
     <main className="min-h-screen bg-card px-4 py-6 md:bg-background md:px-0 md:pt-12.5">
       <div className="mx-auto flex w-full max-w-310 flex-col gap-6 bg-card">
@@ -35,12 +42,18 @@ export default function Home() {
 
           <Button
             type="button"
+            onClick={() => setIsProductDialogOpen(true)}
             className="h-9 gap-1.5 rounded-full bg-primary px-4 font-medium"
           >
             <Plus className="size-4" />
             Dodaj produkt
           </Button>
         </header>
+
+        <ProductDialog
+          open={isProductDialogOpen}
+          onOpenChange={setIsProductDialogOpen}
+        />
 
         <ProductsTable products={products} />
       </div>

@@ -1,8 +1,16 @@
 "use client";
 
-import { ArrowRight, ChevronDown, X } from "lucide-react";
-
+import { useForm } from "@tanstack/react-form";
+import { ArrowRight, X } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { productStepOneSchema } from "@/lib/validation/product-schema";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type ProductDialogProps = {
   open: boolean;
@@ -19,12 +27,41 @@ const features = [
   "Premium",
 ];
 
+const manufacturers = ["Apple", "Samsung", "Sony", "Bosch", "Xiaomi"];
+
+const categories = [
+  "Komputery",
+  "Telefony",
+  "RTV",
+  "AGD",
+  "Akcesoria",
+  "Tablety",
+  "Monitory",
+];
+
 export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      sku: "",
+      description: "",
+      manufacturer: "",
+      category: "",
+      features: [] as string[],
+    },
+    validators: {
+      onSubmit: productStepOneSchema,
+    },
+    onSubmit: async ({ value }) => {
+      console.log("STEP 1:", value);
+    },
+  });
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="w-[720px] max-w-[calc(100vw-32px)] overflow-hidden rounded-2xl border border-foreground/10 bg-background p-0 max-md:h-screen max-md:w-screen max-md:max-w-none max-md:rounded-none max-md:border-0"
+        className="w-180 max-w-[calc(100vw-32px)] overflow-hidden rounded-2xl border border-foreground/10 bg-background p-0 max-md:h-screen max-md:w-screen max-md:max-w-none max-md:rounded-none max-md:border-0"
       >
         {/* Header + Stepper */}
         <div className="flex flex-col gap-4 px-4 pt-6 md:contents">
@@ -37,138 +74,110 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
             <button
               type="button"
               onClick={() => onOpenChange(false)}
-              className="relative size-4 shrink-0 rounded-xs opacity-70"
+              className="flex size-4 shrink-0 items-center justify-center opacity-70"
               aria-label="Zamknij"
             >
-              <X className="size-4 text-foreground" strokeWidth={1.5} />
+              <X className="size-4" />
             </button>
           </div>
 
-          {/* Stepper */}
-
-          {/* MOBILE */}
+          {/* Mobile stepper */}
           <div className="flex shrink-0 flex-col items-start gap-6 border-t border-b border-border py-3 md:hidden">
             <div className="flex w-full items-center justify-start gap-4 py-3">
-              {/* Step 1 */}
               <div className="flex flex-1 flex-col items-start justify-center gap-3">
-                <div className="flex size-8 items-center justify-center rounded-full bg-blue-600">
-                  <span className="text-sm font-semibold leading-5 text-white">
-                    1
-                  </span>
+                <div className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground">
+                  1
                 </div>
 
-                <div className="flex flex-col items-start justify-center gap-0.5">
+                <div className="flex flex-col gap-0.5">
                   <span className="text-sm font-medium leading-5 text-foreground">
                     Informacje
                   </span>
-
-                  <span className="text-xs font-normal leading-4 text-muted-foreground">
-                    Dane podstawowe
+                  <span className="text-xs leading-4 text-muted-foreground">
+                    Podstawowe dane
                   </span>
                 </div>
               </div>
 
-              {/* Step 2 */}
               <div className="flex flex-1 flex-col items-start justify-center gap-3">
-                <div className="flex size-8 items-center justify-center rounded-full border border-border bg-accent">
-                  <span className="text-sm font-semibold leading-5 text-muted-foreground">
-                    2
-                  </span>
+                <div className="flex size-8 items-center justify-center rounded-full bg-muted text-sm font-medium text-muted-foreground">
+                  2
                 </div>
 
-                <div className="flex flex-col items-start justify-center gap-0.5">
+                <div className="flex flex-col gap-0.5">
                   <span className="text-sm font-medium leading-5 text-muted-foreground">
                     Cena
                   </span>
-
-                  <span className="text-xs font-normal leading-4 text-muted-foreground">
-                    Dane cenowe
+                  <span className="text-xs leading-4 text-muted-foreground">
+                    Cena produktu
                   </span>
                 </div>
               </div>
 
-              {/* Step 3 */}
               <div className="flex flex-1 flex-col items-start justify-center gap-3">
-                <div className="flex size-8 items-center justify-center rounded-full border border-border bg-accent">
-                  <span className="text-sm font-semibold leading-5 text-muted-foreground">
-                    3
-                  </span>
+                <div className="flex size-8 items-center justify-center rounded-full bg-muted text-sm font-medium text-muted-foreground">
+                  3
                 </div>
 
-                <div className="flex flex-col items-start justify-center gap-0.5">
+                <div className="flex flex-col gap-0.5">
                   <span className="text-sm font-medium leading-5 text-muted-foreground">
                     Dostępność
                   </span>
-
-                  <span className="text-xs font-normal leading-4 text-muted-foreground">
-                    Stany magazynowe
+                  <span className="text-xs leading-4 text-muted-foreground">
+                    Stan magazynowy
                   </span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* DESKTOP */}
-          <div className="hidden h-[62px] shrink-0 items-center justify-start gap-4 border-b border-border px-4 py-3 md:flex">
-            {/* Step 1 */}
+          {/* Desktop stepper */}
+          <div className="hidden h-15.5 shrink-0 items-center justify-start gap-4 border-b border-border px-4 py-3 md:flex">
             <div className="flex w-36 shrink-0 items-center justify-start gap-3">
-              <div className="flex size-8 items-center justify-center rounded-full bg-blue-600">
-                <span className="text-sm font-semibold leading-5 text-white">
-                  1
-                </span>
+              <div className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground">
+                1
               </div>
 
-              <div className="flex flex-col items-start justify-center gap-0.5">
-                <span className="text-sm font-medium leading-5 text-foreground">
+              <div className="flex min-w-0 flex-col gap-0.5">
+                <span className="whitespace-nowrap text-sm font-medium leading-5 text-foreground">
                   Informacje
                 </span>
-
-                <span className="whitespace-nowrap text-xs font-normal leading-4 text-muted-foreground">
-                  Dane podstawowe
+                <span className="whitespace-nowrap text-xs leading-4 text-muted-foreground">
+                  Podstawowe dane
                 </span>
               </div>
             </div>
 
-            {/* Separator */}
             <div className="h-px w-16 shrink-0 bg-neutral-200" />
 
-            {/* Step 2 */}
             <div className="flex w-28 shrink-0 items-center justify-start gap-3">
-              <div className="flex size-8 items-center justify-center rounded-full border border-border bg-accent">
-                <span className="text-sm font-semibold leading-5 text-muted-foreground">
-                  2
-                </span>
+              <div className="flex size-8 items-center justify-center rounded-full bg-muted text-sm font-medium text-muted-foreground">
+                2
               </div>
 
-              <div className="flex flex-col items-start justify-center gap-0.5">
-                <span className="text-sm font-medium leading-5 text-muted-foreground">
+              <div className="flex min-w-0 flex-col gap-0.5">
+                <span className="whitespace-nowrap text-sm font-medium leading-5 text-muted-foreground">
                   Cena
                 </span>
-
-                <span className="whitespace-nowrap text-xs font-normal leading-4 text-muted-foreground">
-                  Dane cenowe
+                <span className="whitespace-nowrap text-xs leading-4 text-muted-foreground">
+                  Cena
                 </span>
               </div>
             </div>
 
-            {/* Separator */}
             <div className="h-px w-16 shrink-0 bg-neutral-200" />
 
-            {/* Step 3 */}
             <div className="flex w-40 shrink-0 items-center justify-start gap-3">
-              <div className="flex size-8 items-center justify-center rounded-full border border-border bg-accent">
-                <span className="text-sm font-semibold leading-5 text-muted-foreground">
-                  3
-                </span>
+              <div className="flex size-8 items-center justify-center rounded-full bg-muted text-sm font-medium text-muted-foreground">
+                3
               </div>
 
-              <div className="flex flex-1 flex-col items-start justify-center gap-0.5">
-                <span className="text-sm font-medium leading-5 text-muted-foreground">
+              <div className="flex min-w-0 flex-col gap-0.5">
+                <span className="whitespace-nowrap text-sm font-medium leading-5 text-muted-foreground">
                   Dostępność
                 </span>
-
-                <span className="whitespace-nowrap text-xs font-normal leading-4 text-muted-foreground">
-                  Stany magazynowe
+                <span className="whitespace-nowrap text-xs leading-4 text-muted-foreground">
+                  Stan magazynowy
                 </span>
               </div>
             </div>
@@ -176,120 +185,277 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
         </div>
 
         {/* Content */}
-        <div className="flex min-h-0 flex-1 flex-col items-start justify-start gap-4 px-4 pb-4 md:h-[352px] md:shrink-0 md:px-4 md:py-5">
+        <div className="flex min-h-0 flex-1 flex-col items-start justify-start gap-4 px-4 pb-4 md:h-88 md:shrink-0 md:px-4 md:py-5">
           {/* Name + SKU */}
-          <div className="flex w-full flex-col items-start justify-start gap-4 md:h-[60px] md:flex-row">
-            {/* Name */}
-            <div className="flex w-full flex-1 flex-col items-start justify-start gap-2">
-              <div className="self-stretch text-sm font-medium leading-5 text-foreground">
-                Nazwa produktu
-              </div>
+          <div className="flex w-full flex-col items-start justify-start gap-4 md:h-15 md:flex-row">
+            <form.Field
+              name="name"
+              validators={{
+                onChange: productStepOneSchema.shape.name,
+                onBlur: productStepOneSchema.shape.name,
+              }}
+            >
+              {(field) => (
+                <div className="relative flex w-full flex-1 flex-col gap-2">
+                  <label
+                    htmlFor={field.name}
+                    className="text-sm font-medium leading-5 text-foreground"
+                  >
+                    Nazwa produktu
+                  </label>
 
-              <div className="flex h-8 self-stretch items-center justify-start gap-1 rounded-[50px] border border-input bg-transparent px-3 py-1">
-                <div className="line-clamp-1 flex-1 text-sm font-normal leading-5 text-muted-foreground">
-                  np. MacBook Pro 14
+                  <input
+                    id={field.name}
+                    name={field.name}
+                    type="text"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(event) => field.handleChange(event.target.value)}
+                    placeholder="Nazwa produktu"
+                    className="h-8 w-full rounded-full border border-border bg-background px-3 pr-2.5 py-1 text-sm outline-none placeholder:text-muted-foreground focus:border-primary"
+                  />
+
+                  {field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0 && (
+                      <p className="absolute top-15.75 left-0 text-xs leading-4 text-destructive">
+                        {field.state.meta.errors[0]?.message}
+                      </p>
+                    )}
                 </div>
-              </div>
-            </div>
+              )}
+            </form.Field>
 
-            {/* SKU */}
-            <div className="flex w-full flex-1 flex-col items-start justify-start gap-2">
-              <div className="self-stretch text-sm font-medium leading-5 text-foreground">
-                SKU produktu
-              </div>
+            <form.Field
+              name="sku"
+              validators={{
+                onChange: productStepOneSchema.shape.sku,
+                onBlur: productStepOneSchema.shape.sku,
+              }}
+            >
+              {(field) => (
+                <div className="relative flex w-full flex-1 flex-col gap-2">
+                  <label
+                    htmlFor={field.name}
+                    className="text-sm font-medium leading-5 text-foreground"
+                  >
+                    SKU
+                  </label>
 
-              <div className="flex h-8 self-stretch items-center justify-start gap-1 rounded-[50px] border border-input bg-transparent px-3 py-1">
-                <div className="line-clamp-1 flex-1 text-sm font-normal leading-5 text-muted-foreground">
-                  np. MBP14M3PRO
+                  <input
+                    id={field.name}
+                    name={field.name}
+                    type="text"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(event) => field.handleChange(event.target.value)}
+                    placeholder="SKU"
+                    className="h-8 w-full rounded-full border border-border bg-background px-3 pr-2.5 py-1 text-sm outline-none placeholder:text-muted-foreground focus:border-primary"
+                  />
+
+                  {field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0 && (
+                      <p className="absolute top-15.75 left-0 text-xs leading-4 text-destructive">
+                        {field.state.meta.errors[0]?.message}
+                      </p>
+                    )}
                 </div>
-              </div>
-            </div>
+              )}
+            </form.Field>
           </div>
 
           {/* Description */}
-          <div className="flex w-full flex-col items-start justify-start gap-2 md:h-[92px] md:w-[688px]">
-            <div className="self-stretch text-sm font-medium leading-5 text-foreground">
-              Nazwa produktu
-            </div>
+          <form.Field name="description">
+            {(field) => (
+              <div className="flex w-full flex-col gap-2 md:h-23 md:w-172">
+                <label
+                  htmlFor={field.name}
+                  className="text-sm font-medium leading-5 text-foreground"
+                >
+                  Nazwa produktu
+                </label>
 
-            <div className="flex h-16 min-h-16 self-stretch flex-col items-start justify-start gap-2.5 rounded-[10px] border border-input bg-transparent px-2.5 py-2">
-              <div className="flex-1 self-stretch text-sm font-normal leading-5 text-muted-foreground">
-                Krótki opis produktu
+                <textarea
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                  placeholder="Krótki opis produktu"
+                  className="h-16 w-full resize-none rounded-[10px] border border-border bg-background px-2.5 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-primary"
+                />
               </div>
-            </div>
-          </div>
+            )}
+          </form.Field>
 
           {/* Manufacturer + Category */}
-          <div className="flex w-full flex-col items-start justify-start gap-4 md:h-[60px] md:flex-row">
-            {/* Manufacturer */}
-            <div className="flex w-full flex-1 flex-col items-start justify-start gap-2">
-              <div className="self-stretch text-sm font-medium leading-5 text-foreground">
-                Producent
-              </div>
+          <div className="flex w-full flex-col items-start justify-start gap-4 md:h-15 md:flex-row">
+            <form.Field
+              name="manufacturer"
+              validators={{
+                onChange: productStepOneSchema.shape.manufacturer,
+                onBlur: productStepOneSchema.shape.manufacturer,
+              }}
+            >
+              {(field) => (
+                <div className="relative flex w-full flex-1 flex-col gap-2">
+                  <label
+                    htmlFor={field.name}
+                    className="text-sm font-medium leading-5 text-foreground"
+                  >
+                    Producent
+                  </label>
 
-              <div className="flex h-8 self-stretch items-center justify-start gap-1.5 rounded-[50px] border border-input bg-transparent px-3 py-2">
-                <div className="line-clamp-1 flex-1 text-sm font-normal leading-5 text-muted-foreground">
-                  Wybierz producenta
+                  <Select
+                    value={field.state.value}
+                    onValueChange={(value) => {
+                      if (value === null) return;
+
+                      field.handleChange(value);
+                      field.handleBlur();
+                    }}
+                  >
+                    <SelectTrigger
+                      id={field.name}
+                      className="h-8 w-full rounded-full border-border bg-background px-3 py-2 text-sm"
+                    >
+                      <SelectValue placeholder="Wybierz producenta" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {manufacturers.map((manufacturer) => (
+                        <SelectItem key={manufacturer} value={manufacturer}>
+                          {manufacturer}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0 && (
+                      <p className="absolute left-0 top-15.75 text-xs leading-4 text-destructive">
+                        {field.state.meta.errors[0]?.message}
+                      </p>
+                    )}
                 </div>
+              )}
+            </form.Field>
 
-                <ChevronDown
-                  className="size-4 shrink-0 text-muted-foreground"
-                  strokeWidth={1.5}
-                />
-              </div>
-            </div>
+            <form.Field
+              name="category"
+              validators={{
+                onChange: productStepOneSchema.shape.category,
+                onBlur: productStepOneSchema.shape.category,
+              }}
+            >
+              {(field) => (
+                <div className="relative flex w-full flex-1 flex-col gap-2">
+                  <label
+                    htmlFor={field.name}
+                    className="text-sm font-medium leading-5 text-foreground"
+                  >
+                    Kategoria
+                  </label>
 
-            {/* Category */}
-            <div className="flex w-full flex-1 flex-col items-start justify-start gap-2">
-              <div className="self-stretch text-sm font-medium leading-5 text-foreground">
-                Kategoria
-              </div>
+                  <Select
+                    value={field.state.value}
+                    onValueChange={(value) => {
+                      if (value === null) return;
 
-              <div className="flex h-8 self-stretch items-center justify-start gap-1.5 rounded-[50px] border border-input bg-transparent px-3 py-2">
-                <div className="line-clamp-1 flex-1 text-sm font-normal leading-5 text-muted-foreground">
-                  Wybierz kategorię
+                      field.handleChange(value);
+                      field.handleBlur();
+                    }}
+                  >
+                    <SelectTrigger
+                      id={field.name}
+                      className="h-8 w-full rounded-full border-border bg-background px-3 py-2 text-sm"
+                    >
+                      <SelectValue placeholder="Wybierz kategorię" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0 && (
+                      <p className="absolute left-0 top-[63px] text-xs leading-4 text-destructive">
+                        {field.state.meta.errors[0]?.message}
+                      </p>
+                    )}
                 </div>
-
-                <ChevronDown
-                  className="size-4 shrink-0 text-muted-foreground"
-                  strokeWidth={1.5}
-                />
-              </div>
-            </div>
+              )}
+            </form.Field>
           </div>
 
           {/* Features */}
-          <div className="flex w-full flex-col items-start justify-start gap-2 md:h-[52px] md:w-[688px]">
-            <div className="self-stretch text-sm font-medium leading-5 text-foreground">
-              Cechy produktu
-            </div>
+          <form.Field
+            name="features"
+            validators={{
+              onChange: productStepOneSchema.shape.features,
+            }}
+          >
+            {(field) => (
+              <div className="relative flex w-full flex-col gap-2 md:h-13 md:w-172">
+                <span className="text-sm font-medium leading-5 text-foreground">
+                  Cechy produktu
+                </span>
 
-            <div className="flex w-full flex-wrap content-start items-start justify-start gap-2">
-              {features.map((feature) => (
-                <div
-                  key={feature}
-                  className="inline-flex h-6 items-center justify-center gap-1 rounded-3xl border border-border bg-background px-2 py-0.5"
-                >
-                  <span className="text-sm font-normal leading-5 text-muted-foreground">
-                    {feature}
-                  </span>
+                <div className="flex flex-wrap content-start items-start gap-2">
+                  {features.map((feature) => {
+                    const isSelected = field.state.value.includes(feature);
+
+                    return (
+                      <button
+                        key={feature}
+                        type="button"
+                        onClick={() => {
+                          const currentFeatures = field.state.value;
+
+                          field.handleChange(
+                            isSelected
+                              ? currentFeatures.filter(
+                                  (item) => item !== feature,
+                                )
+                              : [...currentFeatures, feature],
+                          );
+                        }}
+                        className={`rounded-3xl border px-2 py-0.5 text-sm leading-5 ${
+                          isSelected
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-border text-foreground"
+                        }`}
+                      >
+                        {feature}
+                      </button>
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
-          </div>
+
+                {field.state.meta.isTouched &&
+                  field.state.meta.errors.length > 0 && (
+                    <p className="absolute top-22.5 md:top-13.75 left-0 text-xs leading-4 text-destructive">
+                      {field.state.meta.errors[0]?.message}
+                    </p>
+                  )}
+              </div>
+            )}
+          </form.Field>
         </div>
 
         {/* Footer */}
-        <div className="flex h-auto shrink-0 self-stretch items-center justify-end gap-2 border-t border-border bg-muted/50 p-4 md:h-[68px]">
+        <div className="flex h-auto shrink-0 self-stretch items-center justify-end gap-2 border-t border-border bg-muted/50 p-4 md:h-17">
           <button
             type="button"
-            className="flex h-9 items-center justify-center gap-1.5 overflow-hidden rounded-[40px] bg-blue-600 px-4 py-2"
+            onClick={() => form.handleSubmit()}
+            className="flex h-9 items-center gap-1.5 rounded-[40px] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
           >
-            <span className="text-sm font-medium leading-5 text-white">
-              Dalej
-            </span>
-
-            <ArrowRight className="size-4 text-white" strokeWidth={1.5} />
+            Dalej
+            <ArrowRight className="size-4" />
           </button>
         </div>
       </DialogContent>

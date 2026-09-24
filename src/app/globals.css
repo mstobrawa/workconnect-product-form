@@ -4,6 +4,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Tailwind CSS v4 custom at-rule; this block is consumed during Tailwind compilation. */
+/* Tailwind CSS v4 directive; ignored by standard CSS linters. */
+/* stylelint-disable-next-line at-rule-no-unknown */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

@@ -1,12 +1,18 @@
 "use client";
 
 import { useState } from "react";
+
+import type { Product } from "@/types/product";
+
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+
 import { ProductDialog } from "@/components/products/product-dialog";
+
 import { ProductsTable } from "@/components/products/products-table";
-import { products } from "@/lib/products";
+
+import { products as initialProducts } from "@/lib/products";
 
 function getProductLabel(count: number) {
   if (count === 1) {
@@ -25,6 +31,7 @@ function getProductLabel(count: number) {
 
 export default function Home() {
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
+  const [productList, setProductList] = useState<Product[]>(initialProducts);
 
   return (
     <main className="min-h-screen bg-card px-4 py-6 md:bg-background md:px-0 md:pt-12.5">
@@ -36,7 +43,8 @@ export default function Home() {
             </h1>
 
             <p className="text-sm leading-5 text-muted-foreground">
-              {products.length} {getProductLabel(products.length)} w katalogu
+              {productList.length} {getProductLabel(productList.length)} w
+              katalogu
             </p>
           </div>
 
@@ -53,9 +61,12 @@ export default function Home() {
         <ProductDialog
           open={isProductDialogOpen}
           onOpenChange={setIsProductDialogOpen}
+          onProductAdded={(product) => {
+            setProductList((currentProducts) => [...currentProducts, product]);
+          }}
         />
 
-        <ProductsTable products={products} />
+        <ProductsTable products={productList} />
       </div>
     </main>
   );

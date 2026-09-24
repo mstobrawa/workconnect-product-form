@@ -57,7 +57,7 @@ function DesktopProductsTable({ products }: ProductsTableProps) {
     <div className="hidden overflow-hidden md:block">
       <Table>
         <colgroup>
-          <col className="w-[357px]" />
+          <col className="w-89.25" />
           <col className="w-[176.6px]" />
           <col className="w-[176.6px]" />
           <col className="w-[176.6px]" />

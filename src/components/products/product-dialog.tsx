@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, Check, X } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
   productStepOneSchema,
@@ -136,8 +136,8 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
           <div className="flex shrink-0 flex-col items-start gap-6 border-t border-b border-border py-3 md:hidden">
             <div className="flex w-full items-center justify-start gap-4 py-3">
               <div className="flex flex-1 flex-col items-start justify-center gap-3">
-                <div className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground">
-                  1
+                <div className="flex size-8 items-center justify-center rounded-full bg-[#2563EB] text-sm font-medium text-white">
+                  {step === 1 ? "1" : <Check className="size-4" />}
                 </div>
 
                 <div className="flex flex-col gap-0.5">
@@ -151,12 +151,22 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
               </div>
 
               <div className="flex flex-1 flex-col items-start justify-center gap-3">
-                <div className="flex size-8 items-center justify-center rounded-full border border-border bg-accent text-sm font-medium text-muted-foreground">
+                <div
+                  className={`flex size-8 items-center justify-center rounded-full text-sm font-medium ${
+                    step === 2
+                      ? "bg-[#2563EB] text-white"
+                      : "border border-[#E5E5E5] bg-[#F5F5F5] text-[#737373]"
+                  }`}
+                >
                   2
                 </div>
 
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-sm font-medium leading-5 text-muted-foreground">
+                  <span
+                    className={`text-sm font-medium leading-5 ${
+                      step === 2 ? "text-[#0A0A0A]" : "text-[#737373]"
+                    }`}
+                  >
                     Cena
                   </span>
                   <span className="text-xs leading-4 text-muted-foreground">
@@ -185,8 +195,8 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
           {/* Desktop stepper */}
           <div className="hidden h-15 shrink-0 items-center justify-start gap-4 border-b border-border px-4 py-3 md:flex">
             <div className="flex w-36 shrink-0 items-center justify-start gap-3">
-              <div className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground">
-                1
+              <div className="flex size-8 items-center justify-center rounded-full bg-[#2563EB] text-sm font-medium text-white">
+                {step === 1 ? "1" : <Check className="size-4" />}
               </div>
 
               <div className="flex min-w-0 flex-col gap-0.5">
@@ -199,17 +209,29 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
               </div>
             </div>
 
-            <div className="h-px w-16 shrink-0 bg-neutral-200" />
+            <div
+              className={`h-px w-16 shrink-0 ${
+                step >= 2 ? "bg-[#2563EB]" : "bg-[#E4E4E4]"
+              }`}
+            />
 
             <div className="flex w-28 shrink-0 items-center justify-start gap-3">
-              <div className="size-8 rounded-full bg-accent outline-1 -outline-offset-1 outline-border inline-flex items-center justify-center">
-                <div className="text-muted-foreground text-sm font-semibold font-['Geist'] leading-5">
-                  2
-                </div>
+              <div
+                className={`inline-flex size-8 items-center justify-center rounded-full text-sm font-medium ${
+                  step === 2
+                    ? "bg-[#2563EB] text-white"
+                    : "border border-[#E5E5E5] bg-[#F5F5F5] text-[#737373]"
+                }`}
+              >
+                2
               </div>
 
               <div className="flex min-w-0 flex-col gap-0.5">
-                <span className="whitespace-nowrap text-sm font-medium leading-5 text-muted-foreground">
+                <span
+                  className={`whitespace-nowrap text-sm font-medium leading-5 ${
+                    step === 2 ? "text-[#0A0A0A]" : "text-[#737373]"
+                  }`}
+                >
                   Cena
                 </span>
                 <span className="whitespace-nowrap text-xs leading-4 text-muted-foreground">
@@ -547,9 +569,15 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
               <div className="flex w-full flex-col gap-4">
                 {/* Ceny */}
                 <div className="flex w-full flex-col gap-4 md:flex-row">
-                  <form.Field name="netPrice">
+                  <form.Field
+                    name="netPrice"
+                    validators={{
+                      onChange: productStepTwoSchema.shape.netPrice,
+                      onBlur: productStepTwoSchema.shape.netPrice,
+                    }}
+                  >
                     {(field) => (
-                      <div className="flex w-full flex-col gap-2">
+                      <div className="relative flex w-full flex-col gap-2">
                         <label className="text-sm font-medium text-[#0A0A0A]">
                           Cena netto
                         </label>
@@ -558,6 +586,7 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
                           type="text"
                           inputMode="decimal"
                           value={field.state.value}
+                          onBlur={field.handleBlur}
                           onChange={(e) => {
                             const value = e.target.value;
 
@@ -574,13 +603,32 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
                           placeholder="0.00"
                           className="h-8 w-full rounded-[60px] border border-[#E5E5E5] bg-[#FFFFFF] px-3 py-1 text-sm text-[#0A0A0A] outline-none placeholder:text-[#737373] focus:border-[#2563EB]"
                         />
+
+                        {field.state.meta.isTouched &&
+                          validateZodField(
+                            productStepTwoSchema.shape.netPrice,
+                            field.state.value,
+                          ) && (
+                            <p className="absolute left-0 top-15 text-xs leading-4 text-[#DC2626]">
+                              {validateZodField(
+                                productStepTwoSchema.shape.netPrice,
+                                field.state.value,
+                              )}
+                            </p>
+                          )}
                       </div>
                     )}
                   </form.Field>
 
-                  <form.Field name="grossPrice">
+                  <form.Field
+                    name="grossPrice"
+                    validators={{
+                      onChange: productStepTwoSchema.shape.grossPrice,
+                      onBlur: productStepTwoSchema.shape.grossPrice,
+                    }}
+                  >
                     {(field) => (
-                      <div className="flex w-full flex-col gap-2">
+                      <div className="relative flex w-full flex-col gap-2">
                         <label className="text-sm font-medium text-[#0A0A0A]">
                           Cena brutto
                         </label>
@@ -589,6 +637,7 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
                           type="text"
                           inputMode="decimal"
                           value={field.state.value}
+                          onBlur={field.handleBlur}
                           onChange={(e) => {
                             const value = e.target.value;
 
@@ -605,6 +654,18 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
                           placeholder="0.00"
                           className="h-8 w-full rounded-[60px] border border-[#E5E5E5] bg-[#FFFFFF] px-3 py-1 text-sm text-[#0A0A0A] outline-none placeholder:text-[#737373] focus:border-[#2563EB]"
                         />
+                        {field.state.meta.isTouched &&
+                          validateZodField(
+                            productStepTwoSchema.shape.grossPrice,
+                            field.state.value,
+                          ) && (
+                            <p className="absolute left-0 top-15 text-xs leading-4 text-[#DC2626]">
+                              {validateZodField(
+                                productStepTwoSchema.shape.grossPrice,
+                                field.state.value,
+                              )}
+                            </p>
+                          )}
                       </div>
                     )}
                   </form.Field>
@@ -722,6 +783,15 @@ export function ProductDialog({ open, onOpenChange }: ProductDialogProps) {
                 }
 
                 await form.handleSubmit();
+                return;
+              }
+
+              const errors = await Promise.all([
+                form.validateField("netPrice", "change"),
+                form.validateField("grossPrice", "change"),
+              ]);
+
+              if (errors.some((fieldErrors) => fieldErrors.length > 0)) {
                 return;
               }
 

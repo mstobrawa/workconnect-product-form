@@ -101,8 +101,12 @@ export function ProductDialog({
           manufacturer: value.manufacturer,
           category: value.category,
           features: value.features,
-          netPrice: Number(value.netPrice),
-          grossPrice: Number(value.grossPrice),
+          netPrice: Number(
+            value.netPrice.replace(",", ".").replace(/^([.,])/, "0$1"),
+          ),
+          grossPrice: Number(
+            value.grossPrice.replace(",", ".").replace(/^([.,])/, "0$1"),
+          ),
           vat: Number(value.vatRate),
           currency: value.currency,
           isAvailable: value.available,
@@ -158,7 +162,7 @@ export function ProductDialog({
     >
       <DialogContent
         showCloseButton={false}
-        className="w-180 max-w-[calc(100vw-32px)] overflow-hidden rounded-2xl border border-foreground/10 bg-background p-0 max-md:h-screen max-md:w-screen max-md:max-w-none max-md:rounded-none max-md:border-0"
+        className="w-180 max-w-[calc(100vw-32px)] overflow-hidden rounded-2xl border border-foreground/10 bg-[#ffffff] p-0 max-md:h-screen max-md:w-screen max-md:max-w-none max-md:rounded-none max-md:border-0"
       >
         {/* Header + Stepper */}
         <div className="flex flex-col gap-4 px-4 pt-6 md:contents">
@@ -204,18 +208,18 @@ export function ProductDialog({
               <div className="flex flex-1 flex-col items-start justify-center gap-3">
                 <div
                   className={`flex size-8 items-center justify-center rounded-full text-sm font-medium ${
-                    step === 2
+                    step >= 2
                       ? "bg-[#2563EB] text-white"
                       : "border border-[#E5E5E5] bg-[#F5F5F5] text-[#737373]"
                   }`}
                 >
-                  2
+                  {step === 3 ? <Check className="size-4" /> : "2"}
                 </div>
 
                 <div className="flex flex-col gap-0.5">
                   <span
                     className={`text-sm font-medium leading-5 ${
-                      step === 2 ? "text-[#0A0A0A]" : "text-[#737373]"
+                      step >= 2 ? "text-[#0A0A0A]" : "text-[#737373]"
                     }`}
                   >
                     Cena
@@ -227,12 +231,22 @@ export function ProductDialog({
               </div>
 
               <div className="flex flex-1 flex-col items-start justify-center gap-3">
-                <div className="flex size-8 items-center justify-center rounded-full border border-border bg-accent text-sm font-medium text-muted-foreground">
+                <div
+                  className={`flex size-8 items-center justify-center rounded-full text-sm font-medium ${
+                    step === 3
+                      ? "bg-[#2563EB] text-white"
+                      : "border border-[#E5E5E5] bg-[#F5F5F5] text-[#737373]"
+                  }`}
+                >
                   3
                 </div>
 
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-sm font-medium leading-5 text-muted-foreground">
+                  <span
+                    className={`text-sm font-medium leading-5 ${
+                      step === 3 ? "text-[#0A0A0A]" : "text-[#737373]"
+                    }`}
+                  >
                     Dostępność
                   </span>
                   <span className="text-xs leading-4 text-muted-foreground">
@@ -244,7 +258,7 @@ export function ProductDialog({
           </div>
 
           {/* Desktop stepper */}
-          <div className="hidden h-15 shrink-0 items-center justify-start gap-4 border-b border-border px-4 py-3 md:flex">
+          <div className="hidden h-14 shrink-0 items-center justify-start gap-4 border-b border-border px-4 py-3 md:flex">
             <div className="flex w-36 shrink-0 items-center justify-start gap-3">
               <div className="flex size-8 items-center justify-center rounded-full bg-[#2563EB] text-sm font-medium text-white">
                 {step === 1 ? "1" : <Check className="size-4" />}
@@ -269,18 +283,18 @@ export function ProductDialog({
             <div className="flex w-28 shrink-0 items-center justify-start gap-3">
               <div
                 className={`inline-flex size-8 items-center justify-center rounded-full text-sm font-medium ${
-                  step === 2
+                  step >= 2
                     ? "bg-[#2563EB] text-white"
                     : "border border-[#E5E5E5] bg-[#F5F5F5] text-[#737373]"
                 }`}
               >
-                2
+                {step === 3 ? <Check className="size-4" /> : "2"}
               </div>
 
               <div className="flex min-w-0 flex-col gap-0.5">
                 <span
                   className={`whitespace-nowrap text-sm font-medium leading-5 ${
-                    step === 2 ? "text-[#0A0A0A]" : "text-[#737373]"
+                    step >= 2 ? "text-[#0A0A0A]" : "text-[#737373]"
                   }`}
                 >
                   Cena
@@ -291,15 +305,29 @@ export function ProductDialog({
               </div>
             </div>
 
-            <div className="h-px w-16 shrink-0 bg-neutral-200" />
+            <div
+              className={`h-px w-16 shrink-0 ${
+                step >= 3 ? "bg-[#2563EB]" : "bg-[#E4E4E4]"
+              }`}
+            />
 
             <div className="flex w-40 shrink-0 items-center justify-start gap-3">
-              <div className="flex size-8 items-center justify-center rounded-full border border-border bg-accent text-sm font-medium text-muted-foreground">
+              <div
+                className={`flex size-8 items-center justify-center rounded-full text-sm font-medium ${
+                  step === 3
+                    ? "bg-[#2563EB] text-white"
+                    : "border border-[#E5E5E5] bg-[#F5F5F5] text-[#737373]"
+                }`}
+              >
                 3
               </div>
 
               <div className="flex min-w-0 flex-col gap-0.5">
-                <span className="whitespace-nowrap text-sm font-medium leading-5 text-muted-foreground">
+                <span
+                  className={`whitespace-nowrap text-sm font-medium leading-5 ${
+                    step === 3 ? "text-[#0A0A0A]" : "text-[#737373]"
+                  }`}
+                >
                   Dostępność
                 </span>
                 <span className="whitespace-nowrap text-xs leading-4 text-muted-foreground">
@@ -343,7 +371,7 @@ export function ProductDialog({
                           void field.validate("change");
                         }}
                         placeholder="np. MacBook Pro 14"
-                        className="h-8 w-full rounded-full border border-border bg-background px-3 pr-2.5 py-1 text-sm outline-none placeholder:text-muted-foreground focus:border-primary"
+                        className="h-8 w-full rounded-full border border-border bg-[#FFFFFF] px-3 pr-2.5 py-1 text-sm outline-none placeholder:text-muted-foreground focus:border-primary"
                       />
 
                       {field.state.meta.isTouched &&
@@ -389,7 +417,7 @@ export function ProductDialog({
                           void field.validate("change");
                         }}
                         placeholder="np. MBP14M3PRO"
-                        className="h-8 w-full rounded-full border border-border bg-background px-3 pr-2.5 py-1 text-sm outline-none placeholder:text-muted-foreground focus:border-primary"
+                        className="h-8 w-full rounded-full border border-border bg-[#FFFFFF] px-3 pr-2.5 py-1 text-sm outline-none placeholder:text-muted-foreground focus:border-primary"
                       />
 
                       {field.state.meta.isTouched &&
@@ -417,7 +445,7 @@ export function ProductDialog({
                       htmlFor={field.name}
                       className="text-sm font-medium leading-5 text-foreground"
                     >
-                      Nazwa produktu
+                      Opis produktu
                     </label>
 
                     <textarea
@@ -429,7 +457,7 @@ export function ProductDialog({
                         field.handleChange(event.target.value)
                       }
                       placeholder="Krótki opis produktu"
-                      className="h-16 w-full resize-none rounded-[10px] border border-border bg-background px-2.5 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-primary"
+                      className="h-16 w-full resize-none rounded-[10px] border border-border bg-[#FFFFFF] px-2.5 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-primary"
                     />
                   </div>
                 )}
@@ -473,7 +501,7 @@ export function ProductDialog({
                         <SelectTrigger
                           id={field.name}
                           onBlur={field.handleBlur}
-                          className="h-8 w-full rounded-full border-border bg-background px-3 py-2 text-sm"
+                          className="h-8 w-full rounded-full border-border bg-[#FFFFFF] px-3 py-2 text-sm"
                         >
                           <SelectValue placeholder="Wybierz producenta" />
                         </SelectTrigger>
@@ -533,7 +561,7 @@ export function ProductDialog({
                         <SelectTrigger
                           id={field.name}
                           onBlur={field.handleBlur}
-                          className="h-8 w-full rounded-full border-border bg-background px-3 py-2 text-sm"
+                          className="h-8 w-full rounded-full border-border bg-[#FFFFFF] px-3 py-2 text-sm"
                         >
                           <SelectValue placeholder="Wybierz kategorię" />
                         </SelectTrigger>
@@ -856,7 +884,7 @@ export function ProductDialog({
                       <div
                         className={
                           field.state.value
-                            ? "flex size-4 items-center justify-center rounded-lg border border-[#2563EB] bg-[#2563EB]"
+                            ? "flex size-4 items-center justify-center rounded-[4px] border border-[#2563EB] bg-[#2563EB]"
                             : "size-4 rounded-lg border border-[#E5E5E5] bg-[#FFFFFF]"
                         }
                       >
@@ -1032,7 +1060,7 @@ export function ProductDialog({
 
         {/* Footer */}
         <div
-          className={`flex h-auto shrink-0 self-stretch items-center gap-2 border-t border-[#E5E5E5] bg-[#FFFFFF] p-4 md:h-17 ${
+          className={`flex h-auto shrink-0 self-stretch items-center gap-2 border-t border-[#E5E5E5] bg-[#FAFAFA] p-4 md:h-17 ${
             step === 1 ? "justify-end" : "justify-between"
           }`}
         >

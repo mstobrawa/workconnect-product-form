@@ -1,12 +1,9 @@
 "use client";
 
 import type { Product } from "@/types/product";
-
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useQueryState, parseAsInteger } from "nuqs";
-
 import { Badge } from "@/components/ui/badge";
-
 import {
   Table,
   TableBody,
@@ -55,7 +52,7 @@ function ProductPrice({
 function DesktopProductsTable({ products }: ProductsTableProps) {
   return (
     <div className="hidden overflow-hidden md:block">
-      <Table>
+      <Table className="w-full min-w-0">
         <colgroup>
           <col className="w-89.25" />
           <col className="w-[176.6px]" />
@@ -67,22 +64,27 @@ function DesktopProductsTable({ products }: ProductsTableProps) {
 
         <TableHeader>
           <TableRow className="bg-gray-50">
-            <TableHead className="h-10 px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
+            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#f9fafb] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
               Nazwa
             </TableHead>
-            <TableHead className="h-10 px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
+
+            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#F9FAFB] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
               SKU
             </TableHead>
-            <TableHead className="h-10 px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
+
+            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#F9FAFB] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
               Kategoria
             </TableHead>
-            <TableHead className="h-10 px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
+
+            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#F9FAFB] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
               Cena Brutto
             </TableHead>
-            <TableHead className="h-10 px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
+
+            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#F9FAFB] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
               Status
             </TableHead>
-            <TableHead className="h-10 px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
+
+            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#F9FAFB] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
               Magazyn
             </TableHead>
           </TableRow>
@@ -95,15 +97,15 @@ function DesktopProductsTable({ products }: ProductsTableProps) {
                 {product.name}
               </TableCell>
 
-              <TableCell className="text-xs leading-4 text-muted-foreground">
-                {product.sku}
+              <TableCell className="h-12 min-w-20 px-4 py-2 text-xs font-normal leading-4 text-muted-foreground">
+                <span className="line-clamp-1">{product.sku}</span>
               </TableCell>
 
-              <TableCell className="text-sm leading-5 text-muted-foreground">
-                {product.category}
+              <TableCell className="h-12 min-w-20 px-4 py-2 text-sm font-normal leading-5 text-muted-foreground">
+                <span className="line-clamp-1">{product.category}</span>
               </TableCell>
 
-              <TableCell className="text-sm font-medium leading-5 text-foreground">
+              <TableCell className="h-12 min-w-20 px-4 py-2 text-sm font-medium leading-5 text-foreground">
                 <ProductPrice
                   grossPrice={product.grossPrice}
                   currency={product.currency}
@@ -114,8 +116,10 @@ function DesktopProductsTable({ products }: ProductsTableProps) {
                 <ProductStatus isAvailable={product.isAvailable} />
               </TableCell>
 
-              <TableCell className="text-sm leading-5 text-foreground">
-                {product.isLimited ? product.stockQuantity : "—"}
+              <TableCell className="h-12 min-w-20 px-4 py-2 border-b border-border text-sm font-normal leading-5 text-foreground">
+                <span className="line-clamp-1">
+                  {product.isLimited ? product.stockQuantity : "—"}
+                </span>
               </TableCell>
             </TableRow>
           ))}
@@ -127,19 +131,18 @@ function DesktopProductsTable({ products }: ProductsTableProps) {
 
 function MobileProductsList({ products }: ProductsTableProps) {
   return (
-    <div className="space-y-2 md:hidden">
+    <div className="space-y-2 md:hidden bg-[#f9fafb]">
       {products.map((product) => (
         <article
           key={product.id}
           className="flex flex-col gap-2 rounded-xl border bg-card p-3"
         >
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center justify-between gap-2.5">
             <div className="flex min-w-0 flex-col gap-1">
-              <h2 className="truncate text-base font-medium leading-6">
+              <h2 className="line-clamp-1 text-base font-medium leading-6 text-foreground">
                 {product.name}
               </h2>
-
-              <p className="text-xs leading-4 text-muted-foreground">
+              <p className="line-clamp-1 text-xs font-normal leading-4 text-muted-foreground">
                 {product.sku}
               </p>
             </div>
@@ -147,36 +150,37 @@ function MobileProductsList({ products }: ProductsTableProps) {
             <ProductStatus isAvailable={product.isAvailable} />
           </div>
 
-          <div className="grid grid-cols-3 gap-1 rounded-[9px] bg-muted p-3">
-            <div>
-              <p className="text-xs leading-4 text-muted-foreground">
-                Kategoria
-              </p>
+          <div className="flex flex-col items-start justify-center gap-1 rounded-lg bg-[#F5F5F5] p-3">
+            <div className="flex w-full items-start gap-1">
+              <div className="flex flex-1 flex-col items-start gap-1">
+                <p className="text-xs font-normal leading-4 text-muted-foreground">
+                  Kategoria
+                </p>
+                <p className="line-clamp-1 self-stretch text-sm font-normal leading-5 text-foreground">
+                  {product.category}
+                </p>
+              </div>
 
-              <p className="mt-1 text-sm leading-5 text-foreground">
-                {product.category}
-              </p>
-            </div>
+              <div className="flex flex-1 flex-col items-start gap-1">
+                <p className="text-xs font-normal leading-4 text-muted-foreground">
+                  Cena brutto
+                </p>
+                <p className="line-clamp-1 self-stretch text-sm font-medium leading-5 text-foreground">
+                  <ProductPrice
+                    grossPrice={product.grossPrice}
+                    currency={product.currency}
+                  />
+                </p>
+              </div>
 
-            <div>
-              <p className="text-xs leading-4 text-muted-foreground">
-                Cena brutto
-              </p>
-
-              <p className="mt-1 text-sm font-medium leading-5 text-foreground">
-                <ProductPrice
-                  grossPrice={product.grossPrice}
-                  currency={product.currency}
-                />
-              </p>
-            </div>
-
-            <div>
-              <p className="text-xs leading-4 text-muted-foreground">Magazyn</p>
-
-              <p className="mt-1 text-sm leading-5 text-foreground">
-                {product.isLimited ? product.stockQuantity : "—"}
-              </p>
+              <div className="flex flex-1 flex-col items-start gap-1">
+                <p className="text-xs font-normal leading-4 text-muted-foreground">
+                  Magazyn
+                </p>
+                <p className="line-clamp-1 self-stretch text-sm font-normal leading-5 text-foreground">
+                  {product.isLimited ? product.stockQuantity : "—"}
+                </p>
+              </div>
             </div>
           </div>
         </article>
@@ -200,17 +204,17 @@ function Pagination({
   const canGoNext = currentPage < totalPages;
 
   return (
-    <div className="flex min-h-16 flex-col items-center justify-center gap-4 bg-card p-4 md:flex-row md:justify-between md:gap-0 md:border-t md:border-border md:bg-gray-50">
+    <div className="flex flex-col items-center justify-center gap-4 bg-[#f9fafb] p-6 md:min-h-16 md:flex-row md:justify-between md:gap-0 md:border-t md:border-border md:bg-[#f9fafb] md:p-4">
       <p className="text-xs leading-4 text-muted-foreground">
         Strona {currentPage} z {totalPages} · {totalProducts} produktów
       </p>
 
-      <div className="flex items-center gap-1">
+      <div className="flex w-full items-center justify-center gap-1 md:w-auto">
         <button
           type="button"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={!canGoPrevious}
-          className="flex h-8 items-center gap-1 px-2 text-sm text-muted-foreground disabled:cursor-default disabled:opacity-50"
+          className="flex h-8 items-center gap-1 rounded-lg bg-transparent py-2 pl-1.5 pr-2.5 text-sm font-medium text-foreground disabled:cursor-default disabled:opacity-50"
         >
           <ChevronLeft className="size-4" />
           Wstecz
@@ -225,8 +229,8 @@ function Pagination({
               aria-current={page === currentPage ? "page" : undefined}
               className={
                 page === currentPage
-                  ? "h-8 min-w-8 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground"
-                  : "h-8 min-w-8 rounded-lg px-3 text-sm text-foreground"
+                  ? "size-8 rounded-lg bg-primary text-sm font-medium text-[#FFFFFF]"
+                  : "size-8 rounded-lg bg-transparent text-sm font-medium text-foreground"
               }
             >
               {page}
@@ -238,7 +242,7 @@ function Pagination({
           type="button"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={!canGoNext}
-          className="flex h-8 items-center gap-1 px-2 text-sm text-foreground disabled:cursor-default disabled:opacity-50"
+          className="flex h-8 items-center gap-1 rounded-lg bg-transparent py-2 pl-2.5 pr-1.5 text-sm font-medium text-foreground disabled:cursor-default disabled:opacity-50"
         >
           Dalej
           <ChevronRight className="size-4" />
@@ -271,7 +275,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
   };
 
   return (
-    <div className="overflow-hidden bg-card md:rounded-lg md:border md:border-border md:shadow-xs">
+    <div className="w-full overflow-hidden bg-card md:rounded-[10px] md:border md:border-border md:shadow-[0_1px_2px_0_rgba(0,0,0,0.05)]">
       <DesktopProductsTable products={visibleProducts} />
 
       <MobileProductsList products={visibleProducts} />

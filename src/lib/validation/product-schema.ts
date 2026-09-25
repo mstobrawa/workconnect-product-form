@@ -22,15 +22,22 @@ export const productStepTwoSchema = z.object({
   netPrice: z
     .string()
     .min(1, "Cena netto jest wymagana")
-    .regex(/^\d+([.,]\d{1,2})?$/, "Cena netto musi być liczbą"),
+    .regex(/^(?:\d+(?:[.,]\d*)?|[.,]\d{1,2})$/, "Cena netto musi być liczbą")
+    .refine(
+      (value) => !/[.,]/.test(value) || value.split(/[.,]/)[1].length <= 2,
+      "Cena netto może mieć maksymalnie 2 miejsca po przecinku",
+    ),
 
   grossPrice: z
     .string()
     .min(1, "Cena brutto jest wymagana")
-    .regex(/^\d+([.,]\d{1,2})?$/, "Cena brutto musi być liczbą"),
+    .regex(/^(?:\d+(?:[.,]\d*)?|[.,]\d{1,2})$/, "Cena brutto musi być liczbą")
+    .refine(
+      (value) => !/[.,]/.test(value) || value.split(/[.,]/)[1].length <= 2,
+      "Cena brutto może mieć maksymalnie 2 miejsca po przecinku",
+    ),
 
   vatRate: z.string().min(1, "Wybierz stawkę VAT"),
-
   currency: z.string().min(1, "Wybierz walutę"),
 });
 

@@ -2,7 +2,7 @@
 
 import type { Product } from "@/types/product";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useQueryState, parseAsInteger } from "nuqs";
+import { parseAsInteger, useQueryState } from "nuqs";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -25,7 +25,7 @@ function ProductStatus({ isAvailable }: { isAvailable: boolean }) {
       variant="default"
       className={
         isAvailable
-          ? "border-transparent bg-green-600/10 text-green-600 hover:bg-green-600/10"
+          ? "border-transparent bg-success/10 text-success hover:bg-success/10"
           : "border-transparent bg-destructive/10 text-destructive hover:bg-destructive/10"
       }
     >
@@ -63,28 +63,28 @@ function DesktopProductsTable({ products }: ProductsTableProps) {
         </colgroup>
 
         <TableHeader>
-          <TableRow className="bg-gray-50">
-            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#f9fafb] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
+          <TableRow className="bg-muted">
+            <TableHead className="h-10 min-w-20 border-b border-border bg-muted px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
               Nazwa
             </TableHead>
 
-            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#F9FAFB] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
+            <TableHead className="h-10 min-w-20 border-b border-border bg-muted px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
               SKU
             </TableHead>
 
-            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#F9FAFB] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
+            <TableHead className="h-10 min-w-20 border-b border-border bg-muted px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
               Kategoria
             </TableHead>
 
-            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#F9FAFB] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
+            <TableHead className="h-10 min-w-20 border-b border-border bg-muted px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
               Cena Brutto
             </TableHead>
 
-            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#F9FAFB] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
+            <TableHead className="h-10 min-w-20 border-b border-border bg-muted px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
               Status
             </TableHead>
 
-            <TableHead className="h-10 min-w-20 border-b border-[#E5E5E5] bg-[#F9FAFB] px-4 py-0 text-left text-sm font-medium leading-5 text-[#737373]">
+            <TableHead className="h-10 min-w-20 border-b border-border bg-muted px-4 py-0 text-left text-sm font-medium leading-5 text-muted-foreground">
               Magazyn
             </TableHead>
           </TableRow>
@@ -131,7 +131,7 @@ function DesktopProductsTable({ products }: ProductsTableProps) {
 
 function MobileProductsList({ products }: ProductsTableProps) {
   return (
-    <div className="space-y-2 md:hidden bg-[#f9fafb]">
+    <div className="space-y-2 md:hidden bg-muted">
       {products.map((product) => (
         <article
           key={product.id}
@@ -150,7 +150,7 @@ function MobileProductsList({ products }: ProductsTableProps) {
             <ProductStatus isAvailable={product.isAvailable} />
           </div>
 
-          <div className="flex flex-col items-start justify-center gap-1 rounded-lg bg-[#F5F5F5] p-3">
+          <div className="flex flex-col items-start justify-center gap-1 rounded-lg bg-secondary p-3">
             <div className="flex w-full items-start gap-1">
               <div className="flex flex-1 flex-col items-start gap-1">
                 <p className="text-xs font-normal leading-4 text-muted-foreground">
@@ -204,7 +204,7 @@ function Pagination({
   const canGoNext = currentPage < totalPages;
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 bg-[#f9fafb] p-6 md:min-h-16 md:flex-row md:justify-between md:gap-0 md:border-t md:border-border md:bg-[#f9fafb] md:p-4">
+    <div className="flex flex-col items-center justify-center gap-4 bg-muted p-6 md:min-h-16 md:flex-row md:justify-between md:gap-0 md:border-t md:border-border md:bg-muted md:p-4">
       <p className="text-xs leading-4 text-muted-foreground">
         Strona {currentPage} z {totalPages} · {totalProducts} produktów
       </p>
@@ -229,7 +229,7 @@ function Pagination({
               aria-current={page === currentPage ? "page" : undefined}
               className={
                 page === currentPage
-                  ? "size-8 rounded-lg bg-primary text-sm font-medium text-[#FFFFFF]"
+                  ? "size-8 rounded-lg bg-primary text-sm font-medium text-primary-foreground"
                   : "size-8 rounded-lg bg-transparent text-sm font-medium text-foreground"
               }
             >

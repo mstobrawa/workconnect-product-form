@@ -162,7 +162,7 @@ export function ProductDialog({
     >
       <DialogContent
         showCloseButton={false}
-        className="w-180 max-w-[calc(100vw-32px)] overflow-hidden rounded-2xl border border-foreground/10 bg-card p-0 max-md:h-screen max-md:w-screen max-md:max-w-none max-md:rounded-none max-md:border-0"
+        className="flex w-180 max-w-[calc(100vw-32px)] flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card p-0 max-md:h-screen max-md:w-screen max-md:max-w-none max-md:rounded-none max-md:border-0"
       >
         <div className="flex flex-col gap-4 px-4 pt-6 md:contents">
           <div className="flex h-auto shrink-0 items-center justify-between md:h-16 md:items-start md:justify-start md:gap-2 md:border-b md:border-border md:px-4 md:py-6">
@@ -334,7 +334,7 @@ export function ProductDialog({
           </div>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col items-start justify-start gap-4 px-4 pb-4 md:h-88 md:shrink-0 md:px-4 md:py-5">
+        <div className="flex min-h-0 flex-1 flex-col items-start justify-start gap-4 overflow-y-auto px-4 pb-4 md:h-88 md:shrink-0 md:overflow-visible md:px-4 md:py-5">
           {step === 1 && (
             <>
               <div className="flex w-full flex-col items-start justify-start gap-4 md:h-15 md:flex-row">

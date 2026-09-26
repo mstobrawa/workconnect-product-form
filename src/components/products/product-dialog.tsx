@@ -162,7 +162,7 @@ export function ProductDialog({
     >
       <DialogContent
         showCloseButton={false}
-        className="flex w-180 max-w-[calc(100vw-32px)] flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card p-0 max-md:h-screen max-md:w-screen max-md:max-w-none max-md:rounded-none max-md:border-0"
+        className="w-180 max-w-[calc(100vw-32px)] overflow-hidden rounded-2xl border border-foreground/10 bg-card p-0 max-md:inset-0 max-md:top-auto max-md:left-auto max-md:translate-x-0 max-md:translate-y-0 max-md:h-dvh max-md:w-screen max-md:max-w-none max-md:rounded-none max-md:border-0"
       >
         <div className="flex flex-col gap-4 px-4 pt-6 md:contents">
           <div className="flex h-auto shrink-0 items-center justify-between md:h-16 md:items-start md:justify-start md:gap-2 md:border-b md:border-border md:px-4 md:py-6">
@@ -187,7 +187,7 @@ export function ProductDialog({
 
           <div className="flex shrink-0 flex-col items-start gap-6 border-t border-b border-border py-3 md:hidden">
             <div className="flex w-full items-center justify-start gap-4 py-3">
-              <div className="flex flex-1 flex-col items-start justify-center gap-3">
+              <div className="flex flex-1 flex-col items-start justify-start gap-3">
                 <div className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground">
                   {step === 1 ? "1" : <Check className="size-4" />}
                 </div>
@@ -202,7 +202,7 @@ export function ProductDialog({
                 </div>
               </div>
 
-              <div className="flex flex-1 flex-col items-start justify-center gap-3">
+              <div className="flex flex-1 flex-col items-start justify-start gap-3">
                 <div
                   className={`flex size-8 items-center justify-center rounded-full text-sm font-medium ${
                     step >= 2
@@ -227,7 +227,7 @@ export function ProductDialog({
                 </div>
               </div>
 
-              <div className="flex flex-1 flex-col items-start justify-center gap-3">
+              <div className="flex flex-1 flex-col items-start justify-start gap-3">
                 <div
                   className={`flex size-8 items-center justify-center rounded-full text-sm font-medium ${
                     step === 3

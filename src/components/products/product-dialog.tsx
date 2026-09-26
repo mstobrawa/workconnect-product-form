@@ -27,7 +27,7 @@ type ProductDialogProps = {
 
 const features = [
   "Bluetooth",
-  "WiFI",
+  "WiFi",
   "USB-C",
   "Wodoodporny",
   "Bezprzewodowy",
@@ -75,12 +75,9 @@ export function ProductDialog({
       minQuantity: "1",
       maxQuantity: "10",
     },
-    // validators: {
-    //   onSubmit: productStepOneSchema,
-    // },
+
     onSubmit: async ({ value }) => {
       if (step === 1) {
-        console.log("STEP 1:", value);
         setStep(2);
         return;
       }
@@ -89,7 +86,6 @@ export function ProductDialog({
         const result = productStepThreeSchema.safeParse(value);
 
         if (!result.success) {
-          console.log(result.error.flatten().fieldErrors);
           return;
         }
 

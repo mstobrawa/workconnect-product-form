@@ -1,36 +1,173 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WorkConnect — formularz dodawania produktu
 
-## Getting Started
+Projekt rekrutacyjny przedstawiający formularz dodawania produktu w trzech krokach wraz z tabelą produktów.
 
-First, run the development server:
+## Demo
+
+https://workconnect-product-form-teal.vercel.app/
+
+## Technologie
+
+- Next.js 16
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- TanStack Form
+- Zod
+- nuqs
+- Lucide React
+
+## Funkcjonalności
+
+- trzyetapowy formularz dodawania produktu,
+- walidacja formularza przy użyciu Zod,
+- zarządzanie stanem formularza z TanStack Form,
+- walidacja pól w trakcie wprowadzania danych,
+- automatyczne przeliczanie ceny netto i brutto,
+- wybór stawki VAT i waluty,
+- obsługa dostępności produktu,
+- obsługa produktów limitowanych,
+- walidacja ilości magazynowej,
+- walidacja minimalnej i maksymalnej ilości produktu w koszyku,
+- responsywny widok desktop i mobile,
+- tabela produktów oraz mobilna lista produktów,
+- paginacja synchronizowana z adresem URL za pomocą nuqs,
+- komunikat potwierdzający dodanie produktu,
+- reset formularza po zamknięciu dialogu.
+
+## Walidacja
+
+Formularz sprawdza poprawność danych na każdym etapie i nie pozwala przejść dalej, dopóki aktualny krok nie zostanie poprawnie wypełniony.
+
+### Krok 1 — informacje o produkcie
+
+- nazwa produktu jest wymagana i musi zawierać minimum 3 znaki,
+- SKU jest wymagane i może zawierać maksymalnie 24 znaki alfanumeryczne,
+- opis produktu jest opcjonalny,
+- producent jest wymagany,
+- kategoria jest wymagana,
+- wymagane jest wybranie przynajmniej jednej cechy produktu.
+
+### Krok 2 — ceny
+
+- cena netto i brutto są wymagane,
+- ceny mogą zawierać maksymalnie dwa miejsca po przecinku,
+- obsługiwane są zarówno przecinek, jak i kropka jako separator dziesiętny,
+- zmiana jednej ceny automatycznie przelicza drugą,
+- stawka VAT i waluta są wymagane.
+
+### Krok 3 — dostępność i limity
+
+- produkt może być dostępny lub niedostępny,
+- ilość magazynowa jest wymagana tylko dla produktu limitowanego,
+- ilość magazynowa musi być nieujemną liczbą całkowitą,
+- minimalna i maksymalna ilość produktu muszą być liczbami całkowitymi,
+- minimalna ilość nie może być większa od maksymalnej.
+
+## Uruchomienie lokalne
+
+### Wymagania
+
+Do uruchomienia projektu potrzebne są:
+
+- Node.js
+- npm
+- Git
+
+### Klonowanie repozytorium
+
+Sklonuj repozytorium:
+
+```bash
+git clone git@github.com:mstobrawa/workconnect-product-form.git
+```
+
+Przejdź do katalogu projektu:
+
+```bash
+cd workconnect-product-form
+```
+
+### Instalacja zależności
+
+Zainstaluj wszystkie wymagane zależności:
+
+```bash
+npm install
+```
+
+### Uruchomienie środowiska developerskiego
+
+Uruchom aplikację:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Aplikacja będzie dostępna pod adresem:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Sprawdzenie projektu
 
-## Learn More
+### Lint
 
-To learn more about Next.js, take a look at the following resources:
+Aby sprawdzić kod pod kątem problemów z lintingiem:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Build produkcyjny
 
-## Deploy on Vercel
+Aby wykonać produkcyjny build aplikacji:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Oba polecenia przechodzą poprawnie.
+
+## QA
+
+Projekt został poddany testom QA przed zakończeniem prac.
+
+W ramach QA sprawdzono między innymi:
+
+- poprawność przechodzenia pomiędzy trzema krokami formularza,
+- walidację wymaganych pól,
+- walidację danych podczas wprowadzania,
+- blokowanie przejścia do kolejnego kroku przy niepoprawnych danych,
+- obsługę poprawnych i niepoprawnych wartości cen,
+- automatyczne przeliczanie ceny netto i brutto,
+- walidację ilości magazynowej dla produktów limitowanych,
+- walidację minimalnej i maksymalnej ilości produktu,
+- działanie przełącznika dostępności produktu,
+- reset formularza po zamknięciu dialogu,
+- dodawanie produktu do tabeli,
+- komunikat potwierdzający dodanie produktu,
+- działanie paginacji i synchronizacji numeru strony z URL,
+- widok desktopowy,
+- widok mobilny,
+- poprawność layoutu względem projektu Figma.
+
+## Uwagi
+
+- Produkty dodane za pomocą formularza są przechowywane wyłącznie w stanie React. Po pełnym odświeżeniu strony znikają.
+- Z tego powodu adres URL może zawierać numer strony, która po odświeżeniu nie będzie już dostępna, ponieważ tymczasowo dodane produkty zostaną usunięte.
+- Specyfikacja zadania nie określa minimalnej wartości ceny, dlatego wartość `0` jest obecnie akceptowana przez formularz.
+- W desktopowej wersji Figma występuje niespójność dotycząca koloru separatora steppera pomiędzy krokami 2 i 3. Implementacja zachowuje logiczne przechodzenie stanu steppera.
+- Skorygowano etykietę pola opisu produktu — w projekcie Figma pole textarea było oznaczone jako „Nazwa produktu”, natomiast zgodnie ze specyfikacją i przeznaczeniem zostało oznaczone jako „Opis produktu”.
+- Specyfikacja zadania zakłada 5 początkowych produktów przykładowych, natomiast aktualny zestaw danych demonstracyjnych zawiera 7 produktów.
+
+## Status projektu
+
+Projekt ukończony i wdrożony na Vercel.
+
+Zweryfikowano:
+
+- `npm run lint` ✅
+- `npm run build` ✅
+- QA funkcjonalne i responsywne ✅
+- dopasowanie interfejsu do projektu Figma ✅
